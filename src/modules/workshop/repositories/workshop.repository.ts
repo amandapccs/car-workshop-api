@@ -19,7 +19,7 @@ const create = async (workshop: {
   name: string;
   address: string;
   location: { type: string; coordinates: number[] };
-}): Promise<Workshop> => {
+}): Promise<Workshop | null> => {
   const newWorkshop = await mongooseWorkshop.create(workshop);
   return {
     id: String(newWorkshop._id),

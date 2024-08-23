@@ -10,6 +10,7 @@ import { getStackTrace } from "../../../shared/stack-trace/get-stack-trace";
 import { WorkshopDtoType, WorkshopDtoUpdateType } from "../dtos/workshop.dto";
 import { Workshop } from "../models/domain.workshop.type";
 import workshopRepository from "../repositories/workshop.repository";
+import { isValidObjectId } from "mongoose";
 
 const getAll = async (): Promise<SuccessResponse<Workshop[]>> => {
   const workshops = await workshopRepository.getAll();
@@ -19,6 +20,16 @@ const getAll = async (): Promise<SuccessResponse<Workshop[]>> => {
 const getById = async (
   id: string
 ): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
+  const isValidMongoId = isValidObjectId(id);
+
+  if (!isValidMongoId) {
+    return err(
+      errorMessages.BAD_REQUEST("invalid workshop id"),
+      getStackTrace(),
+      errorNames.BAD_REQUEST
+    );
+  }
+
   const workshop = await workshopRepository.getById(id);
 
   if (!workshop) {
@@ -32,7 +43,9 @@ const getById = async (
   return success(workshop);
 };
 
-const create = async (workshop: WorkshopDtoType): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
+const create = async (
+  workshop: WorkshopDtoType
+): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
   const newWorkshop = await workshopRepository.create(workshop);
 
   if (!newWorkshop) {
@@ -50,13 +63,23 @@ const update = async (
   id: string,
   workshop: WorkshopDtoUpdateType
 ): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
+  const isValidMongoId = isValidObjectId(id);
+
+  if (!isValidMongoId) {
+    return err(
+      errorMessages.BAD_REQUEST("invalid workshop id"),
+      getStackTrace(),
+      errorNames.BAD_REQUEST
+    );
+  }
+
   const updatedWorkshop = await workshopRepository.update(id, workshop);
 
   if (!updatedWorkshop) {
     return err(
-      errorMessages.NOT_FOUND("workshop"),
+      errorMessages.INTERNAL_SERVER_ERROR,
       getStackTrace(),
-      errorNames.NOT_FOUND
+      errorNames.CANNOT_UPDATE
     );
   }
 
@@ -66,13 +89,23 @@ const update = async (
 const remove = async (
   id: string
 ): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
+  const isValidMongoId = isValidObjectId(id);
+
+  if (!isValidMongoId) {
+    return err(
+      errorMessages.BAD_REQUEST("invalid workshop id"),
+      getStackTrace(),
+      errorNames.BAD_REQUEST
+    );
+  }
+
   const deletedWorkshop = await workshopRepository.remove(id);
 
   if (!deletedWorkshop || !deletedWorkshop.id) {
     return err(
-      errorMessages.NOT_FOUND("workshop"),
+      errorMessages.INTERNAL_SERVER_ERROR,
       getStackTrace(),
-      errorNames.NOT_FOUND
+      errorNames.INTERNAL_SERVER_ERROR
     );
   }
 
@@ -83,14 +116,15 @@ const getNearbyWorkshops = async (
   coordinates: number[],
   maxDistance: number
 ): Promise<SuccessResponse<Workshop[]> | ErrorResponse> => {
+  const maxDistanceInMeters = maxDistance * 1000;
   const nearbyWorkshops = await workshopRepository.getNearbyWorkshops(
     coordinates,
-    maxDistance
+    maxDistanceInMeters
   );
 
-  if (!nearbyWorkshops) {
+  if (nearbyWorkshops.length === 0) {
     return err(
-      errorMessages.NOT_FOUND("workshop"),
+      errorMessages.NOT_FOUND("workshops"),
       getStackTrace(),
       errorNames.NOT_FOUND
     );

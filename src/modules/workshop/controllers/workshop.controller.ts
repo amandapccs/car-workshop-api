@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import workshopService from "../services/workshop.service";
 import { errorHandler } from "../../../shared/error-handler/error-handler";
-import { mongooseIdDTO } from "../../../shared/dtos/mongoose-id.dto";
 
 const getAll = async (_req: Request, res: Response) => {
   const [err, workshops] = await workshopService.getAll();
@@ -19,9 +18,8 @@ const getAll = async (_req: Request, res: Response) => {
 
 const getById = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const validId = mongooseIdDTO(id);
 
-  const [err, workshop] = await workshopService.getById(validId);
+  const [err, workshop] = await workshopService.getById(id);
 
   if (err) {
     const { errMessage, errStatusCode } = errorHandler(err);
@@ -54,9 +52,7 @@ const update = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { body } = req;
 
-  const validId = mongooseIdDTO(id);
-
-  const [err, updatedWorkshop] = await workshopService.update(validId, body);
+  const [err, updatedWorkshop] = await workshopService.update(id, body);
 
   if (err) {
     const { errMessage, errStatusCode } = errorHandler(err);
@@ -71,9 +67,8 @@ const update = async (req: Request, res: Response) => {
 
 const remove = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const validId = mongooseIdDTO(id);
 
-  const [err, deletedWorkshop] = await workshopService.remove(validId);
+  const [err, deletedWorkshop] = await workshopService.remove(id);
 
   if (err) {
     const { errMessage, errStatusCode } = errorHandler(err);

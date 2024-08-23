@@ -7,6 +7,7 @@ export const validate =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync(req.body);
+
       next();
     } catch (error) {
       let err = error;
