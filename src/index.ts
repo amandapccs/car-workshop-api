@@ -23,7 +23,6 @@ const server = app.listen(port, () => {
 
 app.use("/api", workshopRoutes);
 
-
 // Desconectar do MongoDB
 const gracefulShutdown = async () => {
   console.log("Shutting down gracefully...");
