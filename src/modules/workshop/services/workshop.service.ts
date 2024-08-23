@@ -7,6 +7,7 @@ import {
 import { errorMessages } from "../../../shared/enums/error-messages";
 import { errorNames } from "../../../shared/enums/error-names";
 import { getStackTrace } from "../../../shared/stack-trace/get-stack-trace";
+import { WorkshopDtoType, WorkshopDtoUpdateType } from "../dtos/workshop.dto";
 import { Workshop } from "../models/domain.workshop.type";
 import workshopRepository from "../repositories/workshop.repository";
 
@@ -31,11 +32,7 @@ const getById = async (
   return success(workshop);
 };
 
-const create = async (workshop: {
-  name: string;
-  address: string;
-  location: { type: string; coordinates: number[] };
-}): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
+const create = async (workshop: WorkshopDtoType): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
   const newWorkshop = await workshopRepository.create(workshop);
 
   if (!newWorkshop) {
@@ -51,11 +48,7 @@ const create = async (workshop: {
 
 const update = async (
   id: string,
-  workshop: {
-    name?: string;
-    address?: string;
-    location?: { type?: string; coordinates?: number[] };
-  }
+  workshop: WorkshopDtoUpdateType
 ): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
   const updatedWorkshop = await workshopRepository.update(id, workshop);
 
@@ -75,10 +68,7 @@ const remove = async (
 ): Promise<SuccessResponse<Workshop> | ErrorResponse> => {
   const deletedWorkshop = await workshopRepository.remove(id);
 
-  console.log('aaaaaaaaaaaaaaa', deletedWorkshop)
-
   if (!deletedWorkshop || !deletedWorkshop.id) {
-    console.log('ifsoijosjfoijfosfoijoi')
     return err(
       errorMessages.NOT_FOUND("workshop"),
       getStackTrace(),
