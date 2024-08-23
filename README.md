@@ -58,7 +58,8 @@ The API can be run locally or using Docker. If you're running locally, you'll ne
    ```
 5. The application will be running at `http://localhost:3000/`
 
-## Endpoints
+## Endpoints and Documentation
+You can download the API documentation, made with Postman, by clicking <a href="https://api.postman.com/collections/22918885-921373f4-b630-4a4e-8667-fd35d785e386?access_key=PMAT-01J5YKJCZCQJRXM1GGXPWZ7FAE">here</a>.
 
 | Method | Endpoint          | Description                                                                                   |
 |--------|--------------------|-----------------------------------------------------------------------------------------------|
@@ -68,6 +69,9 @@ The API can be run locally or using Docker. If you're running locally, you'll ne
 | PUT    | /api/workshops/:id         | Edits workshop                                                                                   |
 | GET    | /api/workshops/:id         | Access a workshop by using a valid id                                                                                |
 | DELETE | /api/workshops/:id         | Delete a workshop                                                                           |
+
+### Tests
+There are a total of 15 unit tests have been implemented for the API services using Jest.
 
 
 <!-- CONTACT -->
