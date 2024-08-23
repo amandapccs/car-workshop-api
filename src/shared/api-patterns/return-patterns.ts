@@ -1,4 +1,5 @@
-type SuccessResponse<T> = [null, T];
+export type SuccessResponse<T> = [null, T];
+export type ErrorResponse = [{ message: string; stack: string; name: string }, null];
 
 /**
  * Creates an standard response for successful operations.

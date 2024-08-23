@@ -1,14 +1,17 @@
 import express, { Request, Response } from "express";
 import { mongoConnect, mongoDisconnect } from "./database/mongoose-connect";
 import dotenv from "dotenv";
+import workshopRoutes from "./modules/workshop/routes/workshop.routes";
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const port = 3000;
 
 // Conectar ao MongoDB
 mongoConnect();
+
+app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
@@ -17,6 +20,9 @@ app.get("/", (req: Request, res: Response) => {
 const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+app.use("/api", workshopRoutes);
+
 
 // Desconectar do MongoDB
 const gracefulShutdown = async () => {
