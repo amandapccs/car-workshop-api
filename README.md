@@ -24,7 +24,10 @@ The Workshop Locator API is a backend service built with Node and Express, which
 
 <!-- GETTING STARTED -->
 
-The API can be run locally or using Docker. If you're running locally, you'll need a MongoDB connection string. This step can be skipped if using Docker, as it will create three containers: a MongoDB container, a testing container to run all unit tests, and finally, the container running the API.
+The API can be run locally or using Docker. If you're running locally, you'll need a MongoDB connection string. This step can be skipped if using Docker, as it will create three containers: a MongoDB container, a testing container to run all unit tests, and finally, the container running the API. In summary, the 3 containers are as follows:
+* App container
+* Test container
+* Docker container
 
 
 ### Installation
@@ -71,7 +74,7 @@ You can download the API documentation, made with Postman, by clicking <a href="
 | DELETE | /api/workshops/:id         | Delete a workshop                                                                           |
 
 ### Tests
-There are a total of 15 unit tests have been implemented for the API services using Jest.
+There are a total of 15 unit tests that have been implemented for the API services using Jest.
 
 
 <!-- CONTACT -->
